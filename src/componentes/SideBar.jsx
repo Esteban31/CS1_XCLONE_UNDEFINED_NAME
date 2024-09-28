@@ -3,11 +3,11 @@ import React from "react";
 export const SideBar = () => {
     return (
         <>
-            <ul class="menu rounded-box w-56 h-screen">
+            <ul class="menu rounded-box w-60 h-screen">
                 <li className="mb-5">
-                   <img src="assets\img\logo-x.png" alt="" width={"30%"}/>
+                    <img src="assets\img\logo-x.png" alt="" width={"30%"} />
                 </li>
-                <li  className="mb-3">
+                <li className="mb-3 font-extrabold">
                     <a>
                         <img src="assets\img\home-icon.svg" alt="homeIcon" width={"85%"} />
                         Inicio
@@ -49,6 +49,15 @@ export const SideBar = () => {
                         Más opciones
                     </a>
                 </li>
+                <div className="buttonContainer flex justify-center">
+                    <button className="w-2/3 btn bg-custom-blue text-white rounded-full">Postear</button>
+                </div>
+                <br />
+                <button className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
+                    <img src="assets\img\userProfilePic.svg" alt="" width={"20%"} />
+                    Juan
+                    <br />@juan654987
+                </button>
             </ul>
         </>
     );

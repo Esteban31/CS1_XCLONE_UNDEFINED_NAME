@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {SideBar} from "../../componentes/SideBar"
+import { HomeComponent } from '../../componentes/HomeComponent'
 
 export const AppHome = () => {
   return (
@@ -18,7 +19,7 @@ export const AppHome = () => {
 
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-12">
-                    {/* CONTENT HERE */}
+                  <HomeComponent/> 
                 </div>
             </div>
 
