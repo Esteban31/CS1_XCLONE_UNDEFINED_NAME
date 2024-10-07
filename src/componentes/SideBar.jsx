@@ -3,7 +3,7 @@ import React from "react";
 export const SideBar = () => {
     return (
         <>
-            <ul class="menu rounded-box w-60 h-screen">
+            <ul class="menu rounded-box w-60 h-screen ml-8">
                 <li className="mb-5">
                     <img src="assets\img\logo-x.png" alt="" width={"30%"} />
                 </li>
