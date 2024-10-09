@@ -2,6 +2,7 @@ import { Login } from "../pages/Login.jsx";
 
 // APP'S SCREEN
 import { AppHome } from "../pages/app/Home.jsx"; 
+import { Profile } from "../pages/app/Profile.jsx";
 
 
 const routes = [
@@ -12,6 +13,10 @@ const routes = [
   {
     path: '/app',
     element: <AppHome />,
+  },
+  {
+    path: '/app/:user',
+    element: <Profile />,
   },
 ];
 

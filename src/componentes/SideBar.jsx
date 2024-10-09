@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const SideBar = () => {
     return (
@@ -8,46 +9,46 @@ export const SideBar = () => {
                     <img src="assets\img\logo-x.png" alt="" width={"30%"} />
                 </li>
                 <li className="mb-3 font-extrabold">
-                    <a>
+                    <Link to="/app">
                         <img src="assets\img\home-icon.svg" alt="homeIcon" width={"85%"} />
                         Inicio
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\discovery-icon.svg" alt="ExploreIcon" width={"85%"} />
                         Explorar
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\notifications-icon.svg" alt="NotificationsIcon" width={"85%"} />
                         Notificaciones
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\message-icon.svg" alt="MessagesIcon" width={"85%"} />
                         Mensajes
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\grok-icon.svg" alt="GrokIcon" width={"85%"} />
                         Grok
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\profile-icon.svg" alt="profileIcon" width={"85%"} />
                         Perfil
-                    </a>
+                    </Link>
                 </li>
                 <li className="mb-3">
-                    <a>
+                    <Link>
                         <img src="assets\img\options-icon.svg" alt="OptionsIcon" width={"85%"} />
                         Más opciones
-                    </a>
+                    </Link>
                 </li>
                 <div className="buttonContainer flex justify-center">
                     <button className="w-2/3 btn bg-custom-blue text-white rounded-full">Postear</button>
