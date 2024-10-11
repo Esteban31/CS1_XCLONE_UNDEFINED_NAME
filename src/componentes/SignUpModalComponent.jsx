@@ -21,8 +21,8 @@ export const SignUpModalComponent = () => {
         code: "",
         user:"",
         social:{
-            followers: 0,
-            following:0
+            followers: [],
+            following:[]
         },
         profilePic:"https://avatar.iran.liara.run/public/"+randomNumber,
         bannerPic:"https://loremflickr.com/800/200"

@@ -9,8 +9,8 @@ export const usersCollection = [
         code: "1234",
         user:"@juanes123", 
         social:{
-            followers: 0,
-            following:0
+            followers: [],
+            following:[]
         },
         profilePic:"https://avatar.iran.liara.run/public/10",
         bannerPic:"https://loremflickr.com/800/200"
