@@ -7,12 +7,12 @@ export const PostComponent = ({ postProperties }) => {
             <div className="w-full bg-transparent text-white border-l border-r border-custom-gray">
                 <div className="content p-8">
                     <div className="flex items-start">
-                        <img className="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User avatar" />
+                        <img className="w-12 h-12 rounded-full" src={postProperties.userProfilePic} alt="User avatar" />
                         <div className="ml-4">
-                            <Link to={"/app/"+postProperties.userName.replace("@","")}>
+                            <Link to={"/app/"+postProperties.user.replace("@","")}>
                                 <div className="flex items-center">
-                                    <h2 className="font-bold text-lg">{postProperties.user}</h2>
-                                    <span className="text-gray-400 text-sm ml-2">{postProperties.userName}</span>
+                                    <h2 className="font-bold text-lg">{postProperties.userName}</h2>
+                                    <span className="text-gray-400 text-sm ml-2">{postProperties.user} - {postProperties.postDate}</span>
                                 </div>
                             </Link>
                             <p className="text-gray-300">{postProperties.postDescription}</p>
@@ -27,19 +27,19 @@ export const PostComponent = ({ postProperties }) => {
                         <div className="flex items-center space-x-8">
                             <button className="flex items-center space-x-1 text-gray-400 hover:text-blue-500">
                                 <img src="assets\img\postActions\comments.svg" alt="" />
-                                <span>{postProperties.reactions.comments}</span>
+                                <span>{postProperties.reactions.comments.length}</span>
                             </button>
                             <button className="flex items-center space-x-1 text-gray-400 hover:text-blue-500">
                                 <img src="assets\img\postActions\retweet.svg" alt="" />
-                                <span>{postProperties.reactions.retweets}</span>
+                                <span>{postProperties.reactions.retweets.length}</span>
                             </button>
                             <button className="flex items-center space-x-1 text-gray-400 hover:text-blue-500">
                                 <img src="assets\img\postActions\like.svg" alt="" />
-                                <span>{postProperties.reactions.likes}</span>
+                                <span>{postProperties.reactions.likes.length}</span>
                             </button>
                             <button className="flex items-center space-x-1 text-gray-400 hover:text-blue-500">
                                 <img src="assets\img\postActions\stats.svg" alt="" />
-                                <span>{postProperties.reactions.scope}</span>
+                                <span>{postProperties.reactions.scope.length}</span>
                             </button>
                         </div>
                     </div>

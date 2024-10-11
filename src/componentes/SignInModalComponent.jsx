@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
-import { usersCollection } from '../../Database/users'
 import { useNavigate } from 'react-router-dom'
 
 export const SignInModalComponent = () => {
 
     const navigate = useNavigate()
+    const usersCollection = JSON.parse(localStorage.getItem('usersCollection'))
 
     const [formData, setFormData] =  useState({
         email:"",

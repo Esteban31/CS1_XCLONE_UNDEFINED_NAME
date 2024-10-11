@@ -2,23 +2,29 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { RightBarComponent } from './RightBarComponent'
 import { Link } from 'react-router-dom'
-import { usersCollection } from '../../Database/users'
 
 export const ProfileComponent = () => {
 
 
     const { user } = useParams()
+    const userSession = JSON.parse(localStorage.getItem('userSession'))
+    let isSame = false
 
     var userInfo = {}
 
+    const usersCollection = JSON.parse(localStorage.getItem('usersCollection'))
+
     let results = usersCollection.filter(item => item.user.includes(user));
+
+    // Check if the user is already logged
+    if (user == userSession.user.replace('@','')) {
+        isSame = true
+    }
 
 
     // TO DO: Search user in firebase
-    if (!results.length > 0) {//Search in localstorage
-       userInfo = JSON.parse(localStorage.getItem('userSession'))
-    }else{//Search in the collection
-        userInfo = results
+    if (results.length > 0) {
+        userInfo = results[0]
     }
 
 
@@ -42,7 +48,7 @@ export const ProfileComponent = () => {
                                     {/* Imagen de banner */}
                                     <div className="w-full h-32 overflow-hidden">
                                         <img
-                                            src="https://via.placeholder.com/800x200"
+                                            src={userInfo.bannerPic}
                                             alt="Banner"
                                             className="w-full h-full object-cover"
                                         />
@@ -52,7 +58,7 @@ export const ProfileComponent = () => {
                                     <div className="relative">
                                         {/* Imagen de perfil */}
                                         <img
-                                            src="https://via.placeholder.com/150"
+                                            src={userInfo.profilePic}
                                             alt="Profile"
                                             className="w-24 h-24 rounded-full border-4 border-black absolute -top-12 left-5"
                                         />
@@ -66,25 +72,35 @@ export const ProfileComponent = () => {
 
                                             {/* Estadísticas */}
                                             <div className="flex space-x-4 mt-2 text-gray-400">
-                                                <p>14 Siguiendo</p>
-                                                <p>186.2 mil Seguidores</p>
+                                                <p>{userInfo.social.following} Siguiendo</p>
+                                                <p>{userInfo.social.followers} Seguidores</p>
                                             </div>
                                         </div>
 
-                                        {/* Botón de seguir */}
-                                        <button className="absolute right-5 top-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-                                            Siguiendo
+                                        <button className="absolute right-5 top-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700" style={isSame ? {"display":'none'}:{"display":'block'}}>
+                                            Seguir
+                                        </button>
+                                        <button className="absolute right-5 top-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700" style={isSame ? {"display":'block'}:{"display":'none'}}>
+                                            Configurar Perfil
                                         </button>
                                     </div>
 
                                     {/* Texto adicional */}
-                                    <p className="mt-4 text-sm text-gray-500 text-center">Ninguna de las cuentas que sigues sigue a este usuario</p>
+                                    <p style={isSame ? {"display":'none'}:{"display":'grid'}} className="mt-4 text-sm text-gray-500 text-center">Ninguna de las cuentas que sigues sigue a este usuario</p>
 
                                     <br />
-                                    <div role="tablist" class="tabs tabs-bordered">
+                                    <div role="tablist" class="tabs tabs-bordered" style={isSame ? {"display":'none'}:{"display":'grid'}}>
                                         <a role="tab" class="tab tab-active">Post</a>
                                         <a role="tab" class="tab">Respuestas</a>
                                         <a role="tab" class="tab">Fotos y Videos</a>
+                                    </div>
+                                    <div role="tablist" class="tabs tabs-bordered" style={isSame ? {"display":'grid'}:{"display":'none'}}>
+                                        <a role="tab" class="tab tab-active">Post</a>
+                                        <a role="tab" class="tab">Respuestas</a>
+                                        <a role="tab" class="tab">Destacados</a>
+                                        <a role="tab" class="tab">Artículos</a>
+                                        <a role="tab" class="tab">Fotos y Videos</a>
+                                        <a role="tab" class="tab">Me gusta</a>
                                     </div>
                                 </div>
 

@@ -7,6 +7,9 @@ export const SignUpModalComponent = () => {
     const numbers = Array.from({ length: 31 }, (_, index) => index + 1);
     const years = [1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
     const navigate = useNavigate();
+    const usersCollections = JSON.parse(localStorage.getItem('usersCollection'))
+
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
 
     const [formData, setFormData] =  useState({
         userName:"",
@@ -20,7 +23,9 @@ export const SignUpModalComponent = () => {
         social:{
             followers: 0,
             following:0
-        }
+        },
+        profilePic:"https://avatar.iran.liara.run/public/"+randomNumber,
+        bannerPic:"https://loremflickr.com/800/200"
     })
 
     const handleChangeField=(e)=>{
@@ -50,7 +55,12 @@ export const SignUpModalComponent = () => {
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        console.log(formData)
+        
+
+        // saved the data in localStorage
+        usersCollections.push(formData)
+        localStorage.setItem("usersCollection", JSON.stringify(usersCollections))
+
         localStorage.setItem("userSession", JSON.stringify(formData))
         SignUpModal.close()
         navigate("/app")

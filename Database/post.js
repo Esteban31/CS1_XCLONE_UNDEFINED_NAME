@@ -1,26 +1,21 @@
 export const postCollection = [
     {
-        user:"Juan Esteban Calle",
-        userName: "@juanes123",
+        user:"@juanes123",
+        userName: "Juan Esteban Calle",
+        userProfilePic: "https://avatar.iran.liara.run/public/10",
         urlImage: "https://picsum.photos/seed/picsum/150/50",
         postDescription: "Like si lo ves",
+        postDate : "2024-10-09 10:15:24",
         reactions:{
-            comments:10,
-            retweets: 9,
-            likes: 10,
-            scope: 5
+            comments:[],
+            retweets: [],
+            likes: [],
+            scope: []
         }
     },
-    {
-        user:"Karen González",
-        userName: "@karengm",
-        urlImage: "https://picsum.photos/seed/picsum/150/50",
-        postDescription: "Ezzzz",
-        reactions:{
-            comments:10,
-            retweets: 9,
-            likes: 10,
-            scope: 5
-        }
-    }
 ]
+
+
+if (localStorage.getItem("postsCollection") == undefined) {
+    localStorage.setItem('postsCollection', JSON.stringify(postCollection))
+}

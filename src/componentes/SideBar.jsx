@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { LogoutModalComponent } from "./LogoutModalComponent";
+
 
 export const SideBar = () => {
+
+    function openLogoutModal() {
+        LogoutModal.showModal()
+    }
 
     const userSession = JSON.parse(localStorage.getItem('userSession'));
 
@@ -43,7 +49,7 @@ export const SideBar = () => {
                     </Link>
                 </li>
                 <li className="mb-3">
-                    <Link to={"/app/"+userSession.user.replace("@","")}>
+                    <Link to={"/app/" + userSession.user.replace("@", "")}>
                         <img src="/assets\img\profile-icon.svg" alt="profileIcon" width={"85%"} />
                         Perfil
                     </Link>
@@ -58,12 +64,13 @@ export const SideBar = () => {
                     <button className="w-2/3 btn bg-custom-blue text-white rounded-full">Postear</button>
                 </div>
                 <br />
-                <button className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
-                    <img src="/assets\img\userProfilePic.svg" alt="" width={"20%"} />
+                <button onClick={openLogoutModal} className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
+                    <img src={userSession.profilePic} alt="" width={"20%"} />
                     {userSession.userName}
                     <br />{userSession.user}
                 </button>
             </ul>
+            <LogoutModalComponent/>
         </>
     );
 };

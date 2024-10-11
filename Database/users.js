@@ -12,7 +12,12 @@ export const usersCollection = [
             followers: 0,
             following:0
         },
-        profilePic:"",
-        bannerPic:""
+        profilePic:"https://avatar.iran.liara.run/public/10",
+        bannerPic:"https://loremflickr.com/800/200"
     }
 ]
+
+
+if (localStorage.getItem("usersCollection") == undefined) {
+    localStorage.setItem('usersCollection', JSON.stringify(usersCollection))
+}
