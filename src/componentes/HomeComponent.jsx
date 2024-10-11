@@ -29,8 +29,10 @@ export const HomeComponent = () => {
 
         const userSession = JSON.parse(localStorage.getItem('userSession'));
         const today = moment().format('YYYY-MM-DD HH:mm:ss');
+        const id =  Math.floor(Math.random() * 9999) + 1;
 
         const postObject = {
+            id:id,
             user: userSession.user,
             userName: userSession.userName,
             userProfilePic: userSession.profilePic,

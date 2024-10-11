@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { RightBarComponent } from './RightBarComponent';
+import { PostComponent } from './PostComponent';
 
 export const ProfileComponent = () => {
 
@@ -10,6 +11,7 @@ export const ProfileComponent = () => {
     const [usersCollection, setUsersCollection] = useState([]);
     const [isSame, setIsSame] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [postUser, setPostUser] = useState([]);
 
 
 
@@ -46,6 +48,11 @@ export const ProfileComponent = () => {
 
 
 
+    useEffect(() => {
+        const storedPost = JSON.parse(localStorage.getItem('postsCollection')) || [];
+        const filteredPosts = storedPost.filter(item => item.user.replace('@', '') === user); // Cambiar a .filter()
+        setPostUser(filteredPosts); // Siempre será un array
+    }, []);
 
 
     const followAction = () => {
@@ -177,6 +184,17 @@ export const ProfileComponent = () => {
                                     <a role="tab" class="tab">Fotos y Videos</a>
                                     <a role="tab" class="tab">Me gusta</a>
                                 </div>
+
+                                
+                                {/* FEED */}
+                                {postUser.map((post, index) => (
+                                    <div key={index} className="col-span-12 flex justify-center">
+                                        <PostComponent postProperties={post} />
+                                    </div>
+                                ))}
+                                {/* FEED */}
+
+
                             </div>
                         </div>
                     </div>

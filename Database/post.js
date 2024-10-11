@@ -1,5 +1,6 @@
 export const postCollection = [
     {
+        id:1,
         user:"@juanes123",
         userName: "Juan Esteban Calle",
         userProfilePic: "https://avatar.iran.liara.run/public/10",
