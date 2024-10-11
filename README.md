@@ -45,7 +45,7 @@ Luego ejecuta:
   npm run dev
 ```
 
-Felidades, tu proyecto estará corriendo en el puesto 5173 de tu localhost
+Felidades, tu proyecto estará corriendo en el puerto 5173 de tu localhost
 
 
     
