@@ -1,8 +1,51 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# EL1 - X clone
 
-Currently, two official plugins are available:
+Este proyecto se basa en implementar una SPA en react usando el empaquetador vite para replicar la red social X
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+
+
+## Integrantes
+
+- [Juan Esteban Calle Castañeda](https://github.com/Esteban31)
+
+
+## Características funcionales
+
+- SignIn and SignUp con cuenta Local
+- Crear post
+- Visualización de otros usuarios
+- Reaccionar a los post
+- Seguir a otros usuarios
+- Conocer los seguidores de otros usuarios
+
+
+## Stack tecnológico
+
+- Vite - como empaquetador del proyecto
+- Singleton - como patrón de diseño para componentes
+- Tailwind CSS + DaisyUI - Como librería para diseño
+- React - como librería
+- NPM - como manejador de dependencias
+- Javascript - como lenguaje de programación 
+
+
+## Instalación
+
+Una vez descargado o clonado el proyecto, ubicate en la raiz del proyecto y ejecuta este comando:
+
+```bash
+  npm install
+```
+
+Luego ejecuta:
+
+```bash
+  npm run dev
+```
+
+Felidades, tu proyecto estará corriendo en el puesto 5173 de tu localhost
+
+
+    
