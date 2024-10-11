@@ -12,8 +12,8 @@ export const postCollection = [
         }
     },
     {
-        user:"Juan Esteban Calle 2",
-        userName: "@juanes321",
+        user:"Karen González",
+        userName: "@karengm",
         urlImage: "https://picsum.photos/seed/picsum/150/50",
         postDescription: "Ezzzz",
         reactions:{

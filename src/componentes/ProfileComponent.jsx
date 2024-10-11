@@ -2,10 +2,25 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { RightBarComponent } from './RightBarComponent'
 import { Link } from 'react-router-dom'
+import { usersCollection } from '../../Database/users'
 
 export const ProfileComponent = () => {
 
+
     const { user } = useParams()
+
+    var userInfo = {}
+
+    let results = usersCollection.filter(item => item.user.includes(user));
+
+
+    // TO DO: Search user in firebase
+    if (!results.length > 0) {//Search in localstorage
+       userInfo = JSON.parse(localStorage.getItem('userSession'))
+    }else{//Search in the collection
+        userInfo = results
+    }
+
 
     return (
         <>
@@ -18,7 +33,7 @@ export const ProfileComponent = () => {
                                     <Link to="/app" className='btn btn-ghost rounded-full'>
                                         <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.6" fill="none" xmlns="http://www.w3.org/2000/svg" color="#fff"><path d="M21 12L3 12M3 12L11.5 3.5M3 12L11.5 20.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                     </Link>
-                                    <p>{user}</p>
+                                    <p>{userInfo.user.replace('@','')}</p>
                                 </div>
                             </div>
 
@@ -44,10 +59,10 @@ export const ProfileComponent = () => {
 
                                         {/* Nombre del usuario y otros detalles */}
                                         <div className="ml-32 mt-4">
-                                            <h2 className="text-xl font-bold">WestCOL</h2>
-                                            <p className="text-gray-400">@WestCOL</p>
-                                            <p className="text-sm text-gray-400">NUEVA CUENTA 😏👼</p>
-                                            <p className="text-sm text-gray-400">Se unió en octubre de 2023</p>
+                                            <h2 className="text-xl font-bold">{userInfo.userName}</h2>
+                                            <p className="text-gray-400">{userInfo.user}</p>
+                                            <p className="text-sm text-gray-400">"PENDING PUT A DECRIPTION HERE"</p>
+                                            <p className="text-sm text-gray-400">Se unió en {userInfo.birthMonth} del {userInfo.birthYear}</p>
 
                                             {/* Estadísticas */}
                                             <div className="flex space-x-4 mt-2 text-gray-400">
