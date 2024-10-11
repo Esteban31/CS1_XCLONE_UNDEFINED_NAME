@@ -55,7 +55,11 @@ export const SignUpModalComponent = () => {
 
     const handleSubmit = (e)=>{
         e.preventDefault();
+    
         
+        // FORMAT THE USERfield
+        formData.user.replace('@','')
+        formData.user = '@'+formData.user
 
         // saved the data in localStorage
         usersCollections.push(formData)

@@ -96,7 +96,10 @@ export const ProfileComponent = () => {
     };
 
     const openFollowersModal = () => {
-        followersModal.showModal();
+
+        if (userInfo.social.followers.length > 0) {
+            followersModal.showModal();
+        }
     };
 
     if (!userInfo) {
@@ -147,7 +150,7 @@ export const ProfileComponent = () => {
                                         {/* Estadísticas */}
                                         <div className="flex space-x-4 mt-2 text-gray-400">
                                             <p>{userInfo.social.following.length} Siguiendo</p>
-                                            <p onClick={openFollowersModal}>{userInfo.social.followers.length} Seguidores</p>
+                                            <p onClick={openFollowersModal} style={{"cursor":"pointer"}}>{userInfo.social.followers.length} Seguidores</p>
                                         </div>
                                     </div>
 
