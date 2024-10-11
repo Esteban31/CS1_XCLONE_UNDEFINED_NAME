@@ -1,6 +1,18 @@
 import React from 'react'
+import { SignUpModalComponent } from './SignUpModalComponent'
+import { SignInModalComponent } from './SignInModalComponent'
 
 export const LoginComponent = () => {
+
+
+    function onClickOpenSignUpModal(){
+        SignUpModal.showModal()
+    }
+
+    function onClickOpenSignInModal(){
+        SignInModal.showModal()
+    }
+
     return (
         <>
             <div className="grid grid-cols-12">
@@ -37,16 +49,18 @@ export const LoginComponent = () => {
                     {/* SEPARATOR */}
 
 
-                    <button className='btn bg-custom-blue rounded-full w-3/5 text-white'>Crear Cuenta</button>
+                    <button className='btn bg-custom-blue rounded-full w-3/5 text-white' onClick={onClickOpenSignUpModal}>Crear Cuenta</button>
                     <br /><br />
                     <p className='w-3/5 font-light text-sm text-justify'>Al registrarte, aceptas los Términos de servicio y la Política de privacidad, incluida la política de Uso de Cookies.</p>
                     <br />
                     <h3 className='mainTitle font-bold'>¿Ya tienes una cuenta?</h3>
                     <br />
-                    <button className='btn  bg-transparent border-2 border-custom-gray rounded-full w-3/5 text-custom-blue mb-10'>Iniciar Sesión</button>
+                    <button className='btn  bg-transparent border-2 border-custom-gray rounded-full w-3/5 text-custom-blue mb-10' onClick={onClickOpenSignInModal}>Iniciar Sesión</button>
 
                 </div>
             </div>
+            <SignUpModalComponent/>
+            <SignInModalComponent/>
         </>
     )
 }

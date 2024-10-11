@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 
 
 export const SideBar = () => {
+
+    const userSession = JSON.parse(localStorage.getItem('userSession'));
+
     return (
         <>
             <ul class="menu rounded-box w-60 h-screen ml-8">
@@ -40,7 +43,7 @@ export const SideBar = () => {
                     </Link>
                 </li>
                 <li className="mb-3">
-                    <Link>
+                    <Link to={"/app/"+userSession.user.replace("@","")}>
                         <img src="/assets\img\profile-icon.svg" alt="profileIcon" width={"85%"} />
                         Perfil
                     </Link>
@@ -57,8 +60,8 @@ export const SideBar = () => {
                 <br />
                 <button className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
                     <img src="/assets\img\userProfilePic.svg" alt="" width={"20%"} />
-                    Juan
-                    <br />@juan654987
+                    {userSession.userName}
+                    <br />{userSession.user}
                 </button>
             </ul>
         </>

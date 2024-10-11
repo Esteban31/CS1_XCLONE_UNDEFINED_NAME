@@ -1,4 +1,5 @@
 import { Login } from "../pages/Login.jsx";
+import PrivateRoute from "../privateRoutes.context.jsx";
 
 // APP'S SCREEN
 import { AppHome } from "../pages/app/Home.jsx"; 
@@ -12,11 +13,15 @@ const routes = [
   },
   {
     path: '/app',
-    element: <AppHome />,
+    element: (
+      <PrivateRoute  element={<AppHome />} />
+    ),
   },
   {
     path: '/app/:user',
-    element: <Profile />,
+    element: (
+      <PrivateRoute  element={<Profile />} />
+    ),
   },
 ];
 
