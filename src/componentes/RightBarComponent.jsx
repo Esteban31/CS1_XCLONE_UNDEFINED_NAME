@@ -1,6 +1,19 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export const RightBarComponent = () => {
+
+    const userSession = JSON.parse(localStorage.getItem('userSession'))
+    const [usersCollection, setUsersCollection] = useState([])
+
+    useEffect(() => {
+        const storedUsers = JSON.parse(localStorage.getItem('usersCollection')) || [];
+        const filteredUser = storedUsers.filter(item => item.user != userSession.user);
+        setUsersCollection(filteredUser);
+
+    }, []);
+
     return (
         <>
             <div className="searchContainer sticky top-0 bg-black z-10 w-full h-auto">
@@ -36,8 +49,18 @@ export const RightBarComponent = () => {
                 <div className="card-body">
                     <h3 className="font-extrabold">Qué está pasando</h3>
                     <h4>Entretenimiento-Tendencia</h4>
-                    <h1 className="font-bold">Adam Sandler</h1>
-                    <p>1574 post</p>
+                    <h1 className="font-bold">Por conocer</h1>
+                    {usersCollection.map((follower, index) => (
+                        <Link key={index} to={"/app/"+follower.user.replace('@','')}>
+                            <li class="flex items-center py-4 text-white" >
+                                <img class="w-10 h-10 rounded-full" src={follower.profilePic} alt="Foto de perfil" />
+                                <div class="ml-4">
+                                    <p class="text-sm font-semibold">{follower.userName}</p>
+                                    <p class="text-sm text-gray-600">{follower.user}</p>
+                                </div>
+                            </li>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </>

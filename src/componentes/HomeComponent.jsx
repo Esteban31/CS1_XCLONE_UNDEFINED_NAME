@@ -7,6 +7,7 @@ export const HomeComponent = () => {
 
     const [postDescription, setPostDescription] = useState({ postDescription: '' });
     const [postsCollection, setPostsCollection] = useState([]);
+    const userSession = JSON.parse(localStorage.getItem('userSession'));
 
     useEffect(() => {
         
@@ -27,7 +28,7 @@ export const HomeComponent = () => {
     const handlePost = (e) => {
         e.preventDefault();
 
-        const userSession = JSON.parse(localStorage.getItem('userSession'));
+       
         const today = moment().format('YYYY-MM-DD HH:mm:ss');
         const id =  Math.floor(Math.random() * 9999) + 1;
 
@@ -76,7 +77,7 @@ export const HomeComponent = () => {
                                     <form onSubmit={handlePost}>
                                         <div className="card-body flex flex-row w-full items-center">
                                             <img
-                                                src="assets/img/userProfilePic.svg"
+                                                src={userSession.profilePic}
                                                 alt=""
                                                 width={"10%"}
                                             />
@@ -87,6 +88,7 @@ export const HomeComponent = () => {
                                                 onChange={handleChangeField}
                                                 className="input w-full bg-transparent focus:outline-none focus:ring-0 focus:border-transparent text-white"
                                                 placeholder="¡¿Qué está pasando?!"
+                                                required
                                             />
                                         </div>
                                         <div className="flex justify-start ml-28 gap-4 mb-4 items-center">

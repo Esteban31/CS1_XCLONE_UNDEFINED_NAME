@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { RightBarComponent } from './RightBarComponent';
 import { PostComponent } from './PostComponent';
+import { FollowersModalComponent } from './FollowersModalComponent';
 
 export const ProfileComponent = () => {
 
@@ -12,9 +13,6 @@ export const ProfileComponent = () => {
     const [isSame, setIsSame] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const [postUser, setPostUser] = useState([]);
-
-
-
 
     // Cargar la colección de usuarios y establecer la información del perfil
     useEffect(() => {
@@ -27,85 +25,79 @@ export const ProfileComponent = () => {
             setUserInfo(filteredUser);
         }
 
-        
         if (user === userSession.user.replace('@', '')) {
             setIsSame(true);
         }
 
     }, []);
 
-
-
-
     // Verificar si ya sigue al usuario actual solo si userInfo está disponible
     useEffect(() => {
-        if (userInfo && userInfo.social.followers.includes(userSession.user)) {
+        if (userInfo && userInfo.social.followers.some(follower => follower.user === userSession.user)) {
             setIsFollowing(true);
         } else {
             setIsFollowing(false); 
         }
     }, [userInfo, userSession.user]);
 
-
-
+    // Cargar los posts del usuario
     useEffect(() => {
         const storedPost = JSON.parse(localStorage.getItem('postsCollection')) || [];
-        const filteredPosts = storedPost.filter(item => item.user.replace('@', '') === user); // Cambiar a .filter()
+        const filteredPosts = storedPost.filter(item => item.user.replace('@', '') === user);
         setPostUser(filteredPosts); // Siempre será un array
     }, []);
 
-
     const followAction = () => {
-        if (!isFollowing) {//NOW FOLLOWING
+        if (!isFollowing) { // NOW FOLLOWING
 
+            // INDEX PROFIL'S USER
             const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
             const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
 
-            const found = usersCollection[index].social.followers.indexOf(userSession.user);
-            const foundCurrentUser = usersCollection[index].social.followers.indexOf(userSession.user);
-
+            const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
 
             if (found === -1) {
 
                 // UPDATE FOLLOWERS LIST
-                usersCollection[index].social.followers.push(userSession.user);
+                usersCollection[index].social.followers.push({
+                    user: userSession.user,
+                    userName: userSession.userName,
+                    profilePic: userSession.profilePic
+                });
 
                 // UPDATE FOLLOWING LIST
                 usersCollection[indexofCurrentUser].social.following.push(usersCollection[index].user);
 
-
                 localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
 
-
-                setIsFollowing(true)
+                setIsFollowing(true);
             }
 
-
-        }else{//FOLLOWING
-
+        } else { // FOLLOWING
 
             const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
             const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
 
-            const found = usersCollection[index].social.followers.indexOf(userSession.user);
-            const foundCurrentUser = usersCollection[index].social.followers.indexOf(userSession.user);
+            const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
 
-
-            if (found != -1) {
+            if (found !== -1) {
 
                 // UPDATE FOLLOWERS LIST
-                usersCollection[index].social.followers.splice(found,1)
+                usersCollection[index].social.followers.splice(found, 1);
 
-                // UPDATE FOLLOWINK LIST
-                usersCollection[indexofCurrentUser].social.following.splice(foundCurrentUser,1)
-
+                // UPDATE FOLLOWING LIST
+                const foundCurrentUser = usersCollection[indexofCurrentUser].social.following.indexOf(usersCollection[index].user);
+                usersCollection[indexofCurrentUser].social.following.splice(foundCurrentUser, 1);
 
                 localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
-                setIsFollowing(false)
+                setIsFollowing(false);
             }
-
         }
-    }
+    };
+
+    const openFollowersModal = () => {
+        followersModal.showModal();
+    };
 
     if (!userInfo) {
         return <p>Cargando...</p>;
@@ -155,7 +147,7 @@ export const ProfileComponent = () => {
                                         {/* Estadísticas */}
                                         <div className="flex space-x-4 mt-2 text-gray-400">
                                             <p>{userInfo.social.following.length} Siguiendo</p>
-                                            <p>{userInfo.social.followers.length} Seguidores</p>
+                                            <p onClick={openFollowersModal}>{userInfo.social.followers.length} Seguidores</p>
                                         </div>
                                     </div>
 
@@ -185,7 +177,6 @@ export const ProfileComponent = () => {
                                     <a role="tab" class="tab">Me gusta</a>
                                 </div>
 
-                                
                                 {/* FEED */}
                                 {postUser.map((post, index) => (
                                     <div key={index} className="col-span-12 flex justify-center">
@@ -193,7 +184,6 @@ export const ProfileComponent = () => {
                                     </div>
                                 ))}
                                 {/* FEED */}
-
 
                             </div>
                         </div>
@@ -203,6 +193,7 @@ export const ProfileComponent = () => {
                 <div className="col-span-4 border-l border-custom-gray h-screen mt-0 flex flex-col items-center p-6">
                     <RightBarComponent />
                 </div>
+                <FollowersModalComponent followers={userInfo.social.followers}/>
             </div>
         </>
     );
