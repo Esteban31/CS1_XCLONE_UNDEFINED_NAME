@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export const PostComponent = ({ postProperties }) => {
+export const PostComponent = ({ postProperties, index }) => {
 
     const [postCollection, setPostCollection] = useState([]);
     const [currentPost, setCurrentPost] = useState(postProperties); 
@@ -43,7 +43,7 @@ export const PostComponent = ({ postProperties }) => {
 
     return (
         <>
-            <div className="w-full bg-transparent text-white border-l border-r border-custom-gray">
+            <div className="w-full bg-transparent text-white border-l border-r border-custom-gray postContainer" id={index}>
                 <div className="content p-8">
                     <div className="flex items-start">
                         <img className="w-12 h-12 rounded-full" src={currentPost.userProfilePic} alt="User avatar" />

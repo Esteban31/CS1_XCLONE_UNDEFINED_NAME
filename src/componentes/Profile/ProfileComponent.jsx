@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { RightBarComponent } from './RightBarComponent';
-import { PostComponent } from './PostComponent';
+import { RightBarComponent } from '../Dashboard/RightBarComponent';
+import { PostComponent } from '../Post/PostComponent';
 import { FollowersModalComponent } from './FollowersModalComponent';
 
 export const ProfileComponent = () => {

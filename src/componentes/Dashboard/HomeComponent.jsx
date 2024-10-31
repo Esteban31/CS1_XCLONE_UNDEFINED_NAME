@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PostComponent } from "./PostComponent";
+import { PostComponent } from "../Post/PostComponent";
 import { RightBarComponent } from "./RightBarComponent";
 import moment from "moment";
 
@@ -10,7 +10,7 @@ export const HomeComponent = () => {
     const userSession = JSON.parse(localStorage.getItem('userSession'));
 
     useEffect(() => {
-        
+
         const storedPosts = JSON.parse(localStorage.getItem('postsCollection')) || [];
         const sortedPosts = storedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
         setPostsCollection(sortedPosts);
@@ -28,12 +28,12 @@ export const HomeComponent = () => {
     const handlePost = (e) => {
         e.preventDefault();
 
-       
+
         const today = moment().format('YYYY-MM-DD HH:mm:ss');
-        const id =  Math.floor(Math.random() * 9999) + 1;
+        const id = Math.floor(Math.random() * 9999) + 1;
 
         const postObject = {
-            id:id,
+            id: id,
             user: userSession.user,
             userName: userSession.userName,
             userProfilePic: userSession.profilePic,
@@ -50,13 +50,25 @@ export const HomeComponent = () => {
 
         // UPDATE THE POST LIST WITH THE NEW
         const updatedPosts = [postObject, ...postsCollection];
-       
+
         const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-        
+
         localStorage.setItem('postsCollection', JSON.stringify(sortedPosts));
         setPostsCollection(sortedPosts);
 
-        
+        const htmlPostList = document.getElementsByClassName('postContainer');
+        let el = document.getElementById("0");
+
+        console.log(htmlPostList)
+
+
+        // Verifica si 'el' existe antes de aplicar la clase
+        if (el) {
+            el.classList.add("animate__animated", "animate__fadeInUp");
+        } else {
+            console.error("No se encontró el elemento con id '1'");
+        }
+
         setPostDescription({ postDescription: '' });
     }
 
@@ -110,7 +122,7 @@ export const HomeComponent = () => {
                         {/* FEED */}
                         {postsCollection.map((post, index) => (
                             <div key={index} className="col-span-12 flex justify-center">
-                                <PostComponent postProperties={post} />
+                                <PostComponent postProperties={post} index={index} />
                             </div>
                         ))}
                         {/* FEED */}
