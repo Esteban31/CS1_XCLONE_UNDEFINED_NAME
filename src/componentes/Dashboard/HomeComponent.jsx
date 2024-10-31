@@ -89,7 +89,7 @@ export const HomeComponent = () => {
                                     <form onSubmit={handlePost}>
                                         <div className="card-body flex flex-row w-full items-center">
                                             <img
-                                                src={userSession.profilePic}
+                                                src={userSession.photoURL}
                                                 alt=""
                                                 width={"10%"}
                                             />

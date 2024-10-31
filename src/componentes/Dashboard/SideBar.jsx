@@ -49,7 +49,7 @@ export const SideBar = () => {
                     </Link>
                 </li>
                 <li className="mb-3">
-                    <Link to={"/app/" + userSession.user.replace("@", "")}>
+                    <Link to={"/app/" + userSession.displayName.replace("@", "")}>
                         <img src="/assets\img\profile-icon.svg" alt="profileIcon" width={"85%"} />
                         Perfil
                     </Link>
@@ -65,9 +65,10 @@ export const SideBar = () => {
                 </div>
                 <br />
                 <button onClick={openLogoutModal} className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
-                    <img src={userSession.profilePic} alt="" width={"20%"} />
-                    {userSession.userName}
-                    <br />{userSession.user}
+                    <img src={userSession.photoURL} alt="" width={"20%"} />
+                    {/* {userSession.displayName} */}
+                    Current User
+                    <br />{userSession.displayName}
                 </button>
             </ul>
             <LogoutModalComponent/>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { signIn } from '../../firebase/provider'
+import Swal from 'sweetalert2'
 
 export const SignInModalComponent = () => {
 
@@ -21,23 +23,33 @@ export const SignInModalComponent = () => {
     }
 
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async(e)=>{
         e.preventDefault()
 
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
 
-        // CHECK IF THE USER EXIST
-        let results = usersCollection.filter(item => item.email == formData.email);
 
-        if (results.length > 0) {
-            if (results[0].password == formData.password) {
-                localStorage.setItem("userSession", JSON.stringify(results[0]));
-                navigate("/app")
-            }else{
-                alert("Contraseña Incorrecta")
+        const process = await signIn(formData.email, formData.password)
+
+        if (process.ok) {
+
+            if (process.userInfo.photoURL == null) {
+                process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
             }
+
+            localStorage.setItem("userSession", JSON.stringify(process.userInfo));
+            navigate("/app")
         }else{
-            alert("Correo no encontrado")
+            SignInModal.close()
+            Swal.fire({
+                title: 'Error!',
+                text: process.errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
         }
+
+        console.log(process)
        
     }
 

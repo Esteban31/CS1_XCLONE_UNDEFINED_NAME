@@ -2,8 +2,12 @@ import React from 'react'
 import { SignUpModalComponent } from './SignUpModalComponent'
 import { SignInModalComponent } from './SignInModalComponent'
 
+import { signInWithGoogle } from '../../firebase/provider'
+import { useNavigate } from 'react-router-dom'
+
 export const LoginComponent = () => {
 
+    const navigate = useNavigate();
 
     function onClickOpenSignUpModal(){
         SignUpModal.showModal()
@@ -12,6 +16,30 @@ export const LoginComponent = () => {
     function onClickOpenSignInModal(){
         SignInModal.showModal()
     }
+
+
+    async function onClickSignInGoogle(){
+        const process = await signInWithGoogle()
+        if (!process.ok) {
+            Swal.fire({
+                title: 'Error!',
+                text: process.errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }else{
+
+            if (process.userInfo.photoURL == null) {
+                process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
+            }
+
+            localStorage.setItem("userSession", JSON.stringify(process.userInfo))
+            SignUpModal.close()
+            navigate("/app")
+        }
+    }
+
+
 
     return (
         <>
@@ -23,7 +51,7 @@ export const LoginComponent = () => {
                     <h1 className='text-5xl mt-20 font-extrabold mainTitle'>Lo que está pasando ahora</h1><br />
                     <h2 className='text-3xl font-bold mainTitle'>Únete hoy</h2><br />
 
-                    <button className='btn rounded-full hover:red-200 w-3/5 h-10 bg-custom-gray text-black hover:text-white'>
+                    <button className='btn rounded-full hover:red-200 w-3/5 h-10 bg-custom-gray text-black hover:text-white' onClick={onClickSignInGoogle}>
                         <img src="assets\img\google-icon 1.svg" alt="" />
                         Registrarse con Google
                     </button>

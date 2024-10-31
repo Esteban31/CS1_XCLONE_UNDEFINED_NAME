@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { signUp } from '../../firebase/provider';
+import Swal from 'sweetalert2'
 
 export const SignUpModalComponent = () => {
 
@@ -53,7 +55,7 @@ export const SignUpModalComponent = () => {
     };
 
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async(e)=>{
         e.preventDefault();
     
         
@@ -61,13 +63,28 @@ export const SignUpModalComponent = () => {
         formData.user.replace('@','')
         formData.user = '@'+formData.user
 
-        // saved the data in localStorage
-        usersCollections.push(formData)
-        localStorage.setItem("usersCollection", JSON.stringify(usersCollections))
+        const process = await signUp(formData.email, formData.password, formData.user)
 
-        localStorage.setItem("userSession", JSON.stringify(formData))
-        SignUpModal.close()
-        navigate("/app")
+        if (!process.ok) {
+            SignUpModal.close()
+            Swal.fire({
+                title: 'Error!',
+                text: process.errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }else{
+
+            if (process.userInfo.photoURL == null) {
+                process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
+            }
+
+            localStorage.setItem("userSession", JSON.stringify(process.userInfo))
+            SignUpModal.close()
+            navigate("/app")
+        }
+
+       
 
     }
 
