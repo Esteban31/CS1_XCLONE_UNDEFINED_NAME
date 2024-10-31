@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {SideBar} from "../../componentes/SideBar"
-import { ProfileComponent } from '../../componentes/ProfileComponent'
+import { SideBar } from '../../componentes/Dashboard/SideBar'
+import { ProfileComponent } from '../../componentes/Profile/ProfileComponent'
 
 export const Profile = () => {
   return (

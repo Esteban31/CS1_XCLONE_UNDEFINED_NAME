@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {SideBar} from "../../componentes/SideBar"
-import { HomeComponent } from '../../componentes/HomeComponent'
+import { SideBar } from '../../componentes/Dashboard/SideBar'
+import { HomeComponent } from '../../componentes/Dashboard/HomeComponent'
 
 export const AppHome = () => {
   return (
