@@ -3,6 +3,8 @@ import { PostComponent } from "../Post/PostComponent";
 import { RightBarComponent } from "./RightBarComponent";
 import moment from "moment";
 
+import { addPost, getPosts } from "../../firebase/provider";
+
 export const HomeComponent = () => {
 
     const [postDescription, setPostDescription] = useState({ postDescription: '' });
@@ -10,12 +12,19 @@ export const HomeComponent = () => {
     const userSession = JSON.parse(localStorage.getItem('userSession'));
 
     useEffect(() => {
-
-        const storedPosts = JSON.parse(localStorage.getItem('postsCollection')) || [];
-        const sortedPosts = storedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-        setPostsCollection(sortedPosts);
-
+        fetchData();
     }, []);
+
+
+    const fetchData = async () => {
+        try {
+            const data = await getPosts();
+            setPostsCollection(data);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
+
 
     const handleChangeField = (e) => {
         const { name, value } = e.target;
@@ -25,7 +34,7 @@ export const HomeComponent = () => {
         }));
     }
 
-    const handlePost = (e) => {
+    const handlePost = async(e) => {
         e.preventDefault();
 
 
@@ -34,9 +43,9 @@ export const HomeComponent = () => {
 
         const postObject = {
             id: id,
-            user: userSession.user,
-            userName: userSession.userName,
-            userProfilePic: userSession.profilePic,
+            user: userSession.displayName,
+            userName: userSession.displayName,
+            userProfilePic: userSession.photoURL,
             urlImage: "https://loremflickr.com/150/50",
             postDescription: postDescription.postDescription,
             postDate: today,
@@ -48,18 +57,21 @@ export const HomeComponent = () => {
             }
         };
 
+        const process = await addPost(postObject)
+
+        await fetchData()
+
         // UPDATE THE POST LIST WITH THE NEW
-        const updatedPosts = [postObject, ...postsCollection];
+        // const updatedPosts = [postObject, ...postsCollection];
 
-        const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
+        // const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
 
-        localStorage.setItem('postsCollection', JSON.stringify(sortedPosts));
-        setPostsCollection(sortedPosts);
+        // localStorage.setItem('postsCollection', JSON.stringify(sortedPosts));
+        // setPostsCollection(sortedPosts);
 
         const htmlPostList = document.getElementsByClassName('postContainer');
         let el = document.getElementById("0");
 
-        console.log(htmlPostList)
 
 
         // Verifica si 'el' existe antes de aplicar la clase
@@ -91,7 +103,7 @@ export const HomeComponent = () => {
                                             <img
                                                 src={userSession.photoURL}
                                                 alt=""
-                                                width={"10%"}
+                                                className="w-12 h-12 rounded-full"
                                             />
                                             <input
                                                 type="text"

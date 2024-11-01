@@ -1,10 +1,14 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup  } from "firebase/auth";
-import { FirebaseAuth } from "./firebase.config";
+import { getFirestore, collection, addDoc, query, where, getDocs, updateDoc, doc, orderBy } from "firebase/firestore";
+import { FirebaseAuth, FirebaseApp } from "./firebase.config";
 
 
 const GoogleProvider = new GoogleAuthProvider();
+const db = getFirestore(FirebaseApp);
 
 
+
+// AUTH METHODS
 export const signUp = async (email, password, displayName) => {
 
     try {
@@ -75,7 +79,58 @@ export const signInWithGoogle = async () => {
         errorMessage: error.message,
       };
     }
-  };
+};
+
+
+
+// OPERATIONAL METHODS
+export const getPosts = async () => {
+
+    let auxList = []
+    const q = query(collection(db, "posts"), orderBy('postDate', 'desc'));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc, index) => {
+        auxList.push({
+            id: doc.id,
+            user: doc.data().user,
+            userName: doc.data().user,
+            userProfilePic: doc.data().userProfilePic,
+            urlImage: "https://loremflickr.com/150/50",
+            postDescription: doc.data().postDescription,
+            postDate: doc.data().postDate,
+            reactions: {
+                comments:  doc.data().reactions.comments,
+                retweets:  doc.data().reactions.retweets,
+                likes: doc.data().reactions.likes,
+                scope: doc.data().reactions.scope
+            }
+        });
+    });
+
+    return auxList
+}
+
+
+export const addPost = async (postInfo) => {
+
+    try {
+        const docRef = await addDoc(collection(db, "posts"), postInfo);
+
+        console.log(docRef)
+
+        return {
+            ok: true
+        }
+
+    } catch (error) {
+        return {
+            ok: false,
+            errorMessage: error.message
+        }
+    }
+
+}
 
 
 

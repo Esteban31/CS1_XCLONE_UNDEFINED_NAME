@@ -65,10 +65,10 @@ export const SideBar = () => {
                 </div>
                 <br />
                 <button onClick={openLogoutModal} className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
-                    <img src={userSession.photoURL} alt="" width={"20%"} />
+                    <img src={userSession.photoURL} alt="" className="w-10 h-10 rounded-full" />
                     {/* {userSession.displayName} */}
                     Current User
-                    <br />{userSession.displayName}
+                    {/* <br />{userSession.displayName} */}
                 </button>
             </ul>
             <LogoutModalComponent/>
