@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { signUp } from '../../firebase/provider';
+import { signUp, saveUser } from '../../firebase/provider';
 import Swal from 'sweetalert2'
 
 export const SignUpModalComponent = () => {
@@ -65,17 +65,20 @@ export const SignUpModalComponent = () => {
 
         const process = await signUp(formData.email, formData.password, formData.user)
 
-        if (!process.ok) {
+        // WE SAVE THE USER INFO
+        const process2 =  await saveUser(formData)
+
+        if (!process.ok && !process2.ok) {
             SignUpModal.close()
             Swal.fire({
                 title: 'Error!',
-                text: process.errorMessage,
+                text: process.errorMessage+" "+process2.errorMessage,
                 icon: 'error',
                 confirmButtonText: 'Continue'
             })
         }else{
 
-            if (process.userInfo.photoURL == null) {
+            if (process.userInfo?.photoURL == null) {
                 process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
             }
 

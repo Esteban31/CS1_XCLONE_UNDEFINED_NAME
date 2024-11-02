@@ -20,6 +20,7 @@ export const LoginComponent = () => {
 
     async function onClickSignInGoogle(){
         const process = await signInWithGoogle()
+
         if (!process.ok) {
             Swal.fire({
                 title: 'Error!',

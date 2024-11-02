@@ -4,6 +4,8 @@ import { RightBarComponent } from '../Dashboard/RightBarComponent';
 import { PostComponent } from '../Post/PostComponent';
 import { FollowersModalComponent } from './FollowersModalComponent';
 
+import { getUserInfo, getPostByUser, updateUser } from '../../firebase/provider';
+
 export const ProfileComponent = () => {
 
     const { user } = useParams();
@@ -16,62 +18,60 @@ export const ProfileComponent = () => {
 
     // Cargar la colección de usuarios y establecer la información del perfil
     useEffect(() => {
-        const storedUsers = JSON.parse(localStorage.getItem('usersCollection')) || [];
-        setUsersCollection(storedUsers);
-
-        const filteredUser = storedUsers.find(item => item.user.replace('@', '') === user);
-
-        if (filteredUser) {
-            setUserInfo(filteredUser);
-        }
-
-        if (user === userSession.user.replace('@', '')) {
-            setIsSame(true);
-        }
-
+        fetchUserProfile()
     }, []);
+
 
     // Verificar si ya sigue al usuario actual solo si userInfo está disponible
     useEffect(() => {
-        if (userInfo && userInfo.social.followers.some(follower => follower.user === userSession.user)) {
+        if (userInfo && userInfo.social.followers.some(follower => follower.user === userSession.displayName)) {
             setIsFollowing(true);
         } else {
             setIsFollowing(false); 
         }
-    }, [userInfo, userSession.user]);
+    }, [userInfo, userSession.displayName]);
 
-    // Cargar los posts del usuario
+
+       // Cargar los posts del usuario
     useEffect(() => {
-        const storedPost = JSON.parse(localStorage.getItem('postsCollection')) || [];
-        const filteredPosts = storedPost.filter(item => item.user.replace('@', '') === user);
-        setPostUser(filteredPosts); // Siempre será un array
+        fetchPostUser()
     }, []);
 
-    const followAction = () => {
+
+    const fetchUserProfile = async() => {
+        const data = await getUserInfo(user)
+        
+        if (data.ok) {
+
+            if (user === userSession.displayName.replace('@', '')) {
+                setIsSame(true);
+            }
+
+            setUserInfo(data.userInfo)
+        }
+    }
+
+
+
+    const fetchPostUser = async() => {
+        const data = await getPostByUser(user)
+
+        if (data.ok) {
+            setPostUser(data.listPost)
+        }
+    }
+
+    
+
+
+    const followAction = async() => {
         if (!isFollowing) { // NOW FOLLOWING
 
-            // INDEX PROFIL'S USER
-            const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
-            const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
+            userInfo.social.followers.push({user:userSession.displayName})
+            const process = await updateUser(userInfo)
+            setIsFollowing(true);
 
-            const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
 
-            if (found === -1) {
-
-                // UPDATE FOLLOWERS LIST
-                usersCollection[index].social.followers.push({
-                    user: userSession.user,
-                    userName: userSession.userName,
-                    profilePic: userSession.profilePic
-                });
-
-                // UPDATE FOLLOWING LIST
-                usersCollection[indexofCurrentUser].social.following.push(usersCollection[index].user);
-
-                localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
-
-                setIsFollowing(true);
-            }
 
         } else { // FOLLOWING
 

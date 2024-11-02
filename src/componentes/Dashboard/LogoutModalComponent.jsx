@@ -1,13 +1,15 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { logoutUser } from '../../firebase/provider'
 
 export const LogoutModalComponent = () => {
 
     const navigate = useNavigate()
 
-    function logout(){
+    async function logout(){
         localStorage.removeItem('userSession')
         navigate("/")
+        await logoutUser()
     }
 
     return (

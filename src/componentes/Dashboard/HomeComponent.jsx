@@ -46,7 +46,7 @@ export const HomeComponent = () => {
             user: userSession.displayName,
             userName: userSession.displayName,
             userProfilePic: userSession.photoURL,
-            urlImage: "https://loremflickr.com/150/50",
+            urlImage: "https://picsum.photos/150/50",
             postDescription: postDescription.postDescription,
             postDate: today,
             reactions: {
@@ -57,17 +57,10 @@ export const HomeComponent = () => {
             }
         };
 
-        const process = await addPost(postObject)
+
+        await addPost(postObject)
 
         await fetchData()
-
-        // UPDATE THE POST LIST WITH THE NEW
-        // const updatedPosts = [postObject, ...postsCollection];
-
-        // const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-
-        // localStorage.setItem('postsCollection', JSON.stringify(sortedPosts));
-        // setPostsCollection(sortedPosts);
 
         const htmlPostList = document.getElementsByClassName('postContainer');
         let el = document.getElementById("0");

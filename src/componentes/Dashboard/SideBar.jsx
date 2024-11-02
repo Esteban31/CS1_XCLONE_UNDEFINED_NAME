@@ -66,9 +66,8 @@ export const SideBar = () => {
                 <br />
                 <button onClick={openLogoutModal} className="w-3/ btn bg-transparent text-white border-transparent rounded-full justify-center">
                     <img src={userSession.photoURL} alt="" className="w-10 h-10 rounded-full" />
-                    {/* {userSession.displayName} */}
-                    Current User
-                    {/* <br />{userSession.displayName} */}
+                    {userSession.displayName}
+                    <br />{userSession.email.slice(0,6)+"*****"}
                 </button>
             </ul>
             <LogoutModalComponent/>
