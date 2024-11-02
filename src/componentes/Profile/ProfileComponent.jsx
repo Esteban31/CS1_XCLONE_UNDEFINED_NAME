@@ -67,7 +67,12 @@ export const ProfileComponent = () => {
     const followAction = async() => {
         if (!isFollowing) { // NOW FOLLOWING
 
-            userInfo.social.followers.push({user:userSession.displayName})
+            const obj = {
+                profilePic: userSession.photoURL,
+                userName: userSession.displayName,
+                user: userSession.displayName
+            }
+            userInfo.social.followers.push(obj)
             const process = await updateUser(userInfo)
             setIsFollowing(true);
 
