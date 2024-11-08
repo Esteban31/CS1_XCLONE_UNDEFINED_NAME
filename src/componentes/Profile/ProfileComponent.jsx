@@ -4,7 +4,7 @@ import { RightBarComponent } from '../Dashboard/RightBarComponent';
 import { PostComponent } from '../Post/PostComponent';
 import { FollowersModalComponent } from './FollowersModalComponent';
 
-import { getUserInfo, getPostByUser, updateUser } from '../../firebase/provider';
+import { getUserInfo, getPostByUser, updateUser,updateFollowingList  } from '../../firebase/provider';
 
 export const ProfileComponent = () => {
 
@@ -77,26 +77,38 @@ export const ProfileComponent = () => {
             setIsFollowing(true);
 
 
+            // Actualizamos lista de seguidos
+            const obj2 = {
+                profilePic: userInfo.profilePic,
+                userName: userInfo.user,
+                user: userInfo.user
+            }
+        
+           console.log(await updateFollowingList(obj2,userSession.id))
+
+
 
         } else { // FOLLOWING
 
-            const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
-            const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
+            alert("here")
 
-            const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
+            // const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
+            // const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
 
-            if (found !== -1) {
+            // const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
 
-                // UPDATE FOLLOWERS LIST
-                usersCollection[index].social.followers.splice(found, 1);
+            // if (found !== -1) {
 
-                // UPDATE FOLLOWING LIST
-                const foundCurrentUser = usersCollection[indexofCurrentUser].social.following.indexOf(usersCollection[index].user);
-                usersCollection[indexofCurrentUser].social.following.splice(foundCurrentUser, 1);
+            //     // UPDATE FOLLOWERS LIST
+            //     usersCollection[index].social.followers.splice(found, 1);
 
-                localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
-                setIsFollowing(false);
-            }
+            //     // UPDATE FOLLOWING LIST
+            //     const foundCurrentUser = usersCollection[indexofCurrentUser].social.following.indexOf(usersCollection[index].user);
+            //     usersCollection[indexofCurrentUser].social.following.splice(foundCurrentUser, 1);
+
+            //     localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
+            //     setIsFollowing(false);
+            // }
         }
     };
 

@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, where, getDocs, updateDoc, doc, orderBy } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, getDocs, updateDoc, doc, orderBy, arrayUnion } from "firebase/firestore";
 import { FirebaseAuth, FirebaseApp } from "./firebase.config";
 
 
@@ -9,7 +9,7 @@ const db = getFirestore(FirebaseApp);
 
 
 // AUTH METHODS
-export const signUp = async (email, password, displayName) => {
+export const signUp = async (email, password, displayName, formData) => {
 
     try {
         const resp = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
@@ -18,10 +18,13 @@ export const signUp = async (email, password, displayName) => {
 
         await updateProfile(FirebaseAuth.currentUser, { displayName });
 
+        // Guardamos el usuario
+        const saveUserProcess = await saveUser(formData)
+
         return {
             ok: true,
             userInfo: {
-                uid, photoURL, email, displayName
+                uid, photoURL, email, displayName, id:saveUserProcess.insertdId
             }
 
         }
@@ -172,9 +175,12 @@ export const saveUser = async (user) => {
     try {
         const docRef = await addDoc(collection(db, "users"), user);
 
+        console.log(docRef)
+
 
         return {
-            ok: true
+            ok: true,
+            insertdId: docRef.id
         }
 
     } catch (error) {
@@ -261,6 +267,55 @@ export const updateUser = async (schema) => {
         }
     }
 
+    
+}
+
+
+export const Getfollowing = async(user) =>{
+    try {
+        const q = query(collection(db, "users"), where("user", "==", "@" + user));
+        const querySnapshot = await getDocs(q);
+
+        let following = []
+
+        querySnapshot.forEach((doc, index) => {
+            posts.push(doc.data().social.following)
+        })
+
+        return {
+            ok: true,
+            followingList: following
+        }
+
+
+    } catch (error) {
+        return {
+            ok: false,
+            errorMessage: error.message
+        }
+    }
+}
+
+
+export const updateFollowingList =  async(followerUser, userId) =>{
+
+    try {
+        const process = await updateDoc(
+            doc(db, "users", userId),
+            {
+                "social.following": arrayUnion(followerUser)
+            }
+        );
+    
+        return {
+            ok: true,
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            errorMessage: error.message
+        }
+    }
     
 }
 

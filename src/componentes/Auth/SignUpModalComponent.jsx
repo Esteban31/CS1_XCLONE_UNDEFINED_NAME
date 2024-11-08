@@ -63,16 +63,13 @@ export const SignUpModalComponent = () => {
         formData.user.replace('@','')
         formData.user = '@'+formData.user
 
-        const process = await signUp(formData.email, formData.password, formData.user)
+        const process = await signUp(formData.email, formData.password, formData.user, formData)
 
-        // WE SAVE THE USER INFO
-        const process2 =  await saveUser(formData)
-
-        if (!process.ok && !process2.ok) {
+        if (!process.ok) {
             SignUpModal.close()
             Swal.fire({
                 title: 'Error!',
-                text: process.errorMessage+" "+process2.errorMessage,
+                text: process.errorMessage,
                 icon: 'error',
                 confirmButtonText: 'Continue'
             })
