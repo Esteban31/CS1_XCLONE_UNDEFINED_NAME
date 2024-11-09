@@ -33,9 +33,9 @@ export const SignInModalComponent = () => {
 
         if (process.ok) {
 
-            if (process.userInfo.photoURL == null) {
-                process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
-            }
+            // if (process.userInfo.photoURL == null) {
+            //     process.userInfo.photoURL = "https://avatar.iran.liara.run/public/"+randomNumber
+            // }
 
             localStorage.setItem("userSession", JSON.stringify(process.userInfo));
             navigate("/app")

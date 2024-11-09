@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, where, getDocs, updateDoc, doc, orderBy, arrayUnion } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, getDocs, updateDoc, doc, orderBy, arrayUnion, arrayRemove } from "firebase/firestore";
 import { FirebaseAuth, FirebaseApp } from "./firebase.config";
 
 
@@ -51,7 +51,7 @@ export const signIn = async (email, password) => {
             return {
                 ok: true,
                 userInfo: {
-                    uid, photoURL, email, displayName, id: searchIssetUser.userInfo?.id
+                    uid, email, displayName, id: searchIssetUser.userInfo?.id, photoURL: searchIssetUser.userInfo?.profilePic
                 }
             }
         }
@@ -272,6 +272,9 @@ export const updateUser = async (schema) => {
 
 
 export const Getfollowing = async(user) =>{
+
+    user = user.replace('@','')
+
     try {
         const q = query(collection(db, "users"), where("user", "==", "@" + user));
         const querySnapshot = await getDocs(q);
@@ -279,7 +282,7 @@ export const Getfollowing = async(user) =>{
         let following = []
 
         querySnapshot.forEach((doc, index) => {
-            posts.push(doc.data().social.following)
+            following.push(doc.data().social.following)
         })
 
         return {
@@ -319,6 +322,50 @@ export const updateFollowingList =  async(followerUser, userId) =>{
     
 }
 
+
+export const updateFollowerList =  async(followerUser, userId) =>{
+
+    try {
+        const process = await updateDoc(
+            doc(db, "users", userId),
+            {
+                "social.followers": arrayUnion(followerUser)
+            }
+        );
+    
+        return {
+            ok: true,
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            errorMessage: error.message
+        }
+    }
+    
+}
+
+
+export async function removeFollower(userId, followerToRemove) {
+    try {
+      // Referencia al documento del usuario
+      const userRef = doc(db, "users", userId);
+      
+      // Eliminar el seguidor usando arrayRemove
+      await updateDoc(userRef, {
+        "social.followers": arrayRemove(followerToRemove),
+      });
+  
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        errorMessage: error.message
+      };
+    }
+  }
 
 
 

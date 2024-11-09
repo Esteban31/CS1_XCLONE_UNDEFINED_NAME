@@ -3,15 +3,15 @@ import { useParams, Link } from 'react-router-dom';
 import { RightBarComponent } from '../Dashboard/RightBarComponent';
 import { PostComponent } from '../Post/PostComponent';
 import { FollowersModalComponent } from './FollowersModalComponent';
+import { FollowingModalComponent } from './FollowingModalComponent';
 
-import { getUserInfo, getPostByUser, updateUser,updateFollowingList  } from '../../firebase/provider';
+import { getUserInfo, getPostByUser, updateUser,updateFollowingList, removeFollower  } from '../../firebase/provider';
 
 export const ProfileComponent = () => {
 
     const { user } = useParams();
     const userSession = JSON.parse(localStorage.getItem('userSession'));
     const [userInfo, setUserInfo] = useState(null);
-    const [usersCollection, setUsersCollection] = useState([]);
     const [isSame, setIsSame] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const [postUser, setPostUser] = useState([]);
@@ -84,38 +84,41 @@ export const ProfileComponent = () => {
                 user: userInfo.user
             }
         
-           console.log(await updateFollowingList(obj2,userSession.id))
+            await updateFollowingList(obj2,userSession.id)
 
 
 
         } else { // FOLLOWING
 
-            alert("here")
 
-            // const index = usersCollection.findIndex(userItem => userItem.user.replace('@', '') === user);
-            // const indexofCurrentUser = usersCollection.findIndex(userItem => userItem.user === userSession.user);
+            const objToDelete = {
+                profilePic: userSession.photoURL,
+                userName: userSession.displayName,
+                user: userSession.displayName
+            }
 
-            // const found = usersCollection[index].social.followers.findIndex(follower => follower.user === userSession.user);
 
-            // if (found !== -1) {
+            const deleteFollow = await removeFollower(userInfo.id, objToDelete)
+            console.log(deleteFollow)
+            console.log(objToDelete)
+            setIsFollowing(false);
 
-            //     // UPDATE FOLLOWERS LIST
-            //     usersCollection[index].social.followers.splice(found, 1);
-
-            //     // UPDATE FOLLOWING LIST
-            //     const foundCurrentUser = usersCollection[indexofCurrentUser].social.following.indexOf(usersCollection[index].user);
-            //     usersCollection[indexofCurrentUser].social.following.splice(foundCurrentUser, 1);
-
-            //     localStorage.setItem('usersCollection', JSON.stringify(usersCollection));
-            //     setIsFollowing(false);
-            // }
         }
+
+        fetchUserProfile()
     };
 
     const openFollowersModal = () => {
 
         if (userInfo.social.followers.length > 0) {
             followersModal.showModal();
+        }
+    };
+
+    const openFollingModal = () => {
+
+        if (userInfo.social.following.length > 0) {
+            followingModal.showModal();
         }
     };
 
@@ -166,7 +169,7 @@ export const ProfileComponent = () => {
 
                                         {/* Estadísticas */}
                                         <div className="flex space-x-4 mt-2 text-gray-400">
-                                            <p>{userInfo.social.following.length} Siguiendo</p>
+                                            <p onClick={openFollingModal} style={{"cursor":"pointer"}}>{userInfo.social.following.length} Siguiendo</p>
                                             <p onClick={openFollowersModal} style={{"cursor":"pointer"}}>{userInfo.social.followers.length} Seguidores</p>
                                         </div>
                                     </div>
@@ -214,6 +217,7 @@ export const ProfileComponent = () => {
                     <RightBarComponent />
                 </div>
                 <FollowersModalComponent followers={userInfo.social.followers}/>
+                <FollowingModalComponent followers={userInfo.social.following}/>
             </div>
         </>
     );

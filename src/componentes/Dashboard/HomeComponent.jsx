@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PostComponent } from "../Post/PostComponent";
 import { RightBarComponent } from "./RightBarComponent";
 import moment from "moment";
+import Swal from 'sweetalert2'
 
 import { addPost, getPosts } from "../../firebase/provider";
 
@@ -34,7 +35,7 @@ export const HomeComponent = () => {
         }));
     }
 
-    const handlePost = async(e) => {
+    const handlePost = async (e) => {
         e.preventDefault();
 
 
@@ -58,23 +59,32 @@ export const HomeComponent = () => {
         };
 
 
-        await addPost(postObject)
+        if (postDescription.postDescription.length < 280) {
+            await addPost(postObject)
 
-        await fetchData()
+            await fetchData()
 
-        const htmlPostList = document.getElementsByClassName('postContainer');
-        let el = document.getElementById("0");
+            const htmlPostList = document.getElementsByClassName('postContainer');
+            let el = document.getElementById("0");
 
 
 
-        // Verifica si 'el' existe antes de aplicar la clase
-        if (el) {
-            el.classList.add("animate__animated", "animate__fadeInUp");
-        } else {
-            console.error("No se encontró el elemento con id '1'");
+            // Verifica si 'el' existe antes de aplicar la clase
+            if (el) {
+                el.classList.add("animate__animated", "animate__fadeInUp");
+            } else {
+                console.error("No se encontró el elemento con id '1'");
+            }
+
+            setPostDescription({ postDescription: '' });
+        }else{
+            Swal.fire({
+                title: 'Upps!',
+                text: 'The maximum number of characters ,must be 280',
+                icon: 'info',
+                confirmButtonText: 'Continue'
+            })
         }
-
-        setPostDescription({ postDescription: '' });
     }
 
     return (

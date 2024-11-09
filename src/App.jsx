@@ -5,6 +5,7 @@ import { Login } from './pages/Login';
 
 import { AppHome } from "./pages/app/Home.jsx"; 
 import { Profile } from "./pages/app/Profile.jsx";
+import PrivateRoute from './privateRoutes.context.jsx';
 
 function App() {
   return (

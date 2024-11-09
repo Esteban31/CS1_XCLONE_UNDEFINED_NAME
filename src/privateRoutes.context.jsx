@@ -8,7 +8,10 @@ const PrivateRoute = ({ element }) => {
     // WE VALIDE THE SESSION WITH THE LOCAL STORAGE OBJECT
     const userSession = localStorage.getItem('userSession');
     if (userSession != undefined) {
+        // alert("ez2")
         isAuthenticated = true
+    }else{
+        // alert("ez")
     }
 
     return isAuthenticated ? element : <Navigate to="/" />;
